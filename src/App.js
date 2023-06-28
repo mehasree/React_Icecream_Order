@@ -1,25 +1,43 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom';
+import IceCreamPage from './IceCreamPage';
+import ReviewOrderPage from './ReviewOrderPage';
 import './App.css';
 
-function App() {
+const App = () => {
+  const [orderItems, setOrderItems] = useState([]);
+
+  const handleAddToOrder = (iceCream, quantity) => {
+    const item = {
+      name: iceCream.name,
+      price: iceCream.price,
+      quantity: quantity,
+    };
+    setOrderItems([...orderItems, item]);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="app-container">
+        <nav>
+          <ul>
+            <li>
+              <Link to="/icecream">Ice Cream</Link>
+            </li>
+            <li>
+              <Link to="/review-order">Review Order</Link>
+            </li>
+          </ul>
+        </nav>
+
+        <Routes>
+          <Route path="/icecream" element={<IceCreamPage handleAddToOrder={handleAddToOrder} />} />
+          <Route path="/review-order" element={<ReviewOrderPage orderItems={orderItems} />} />
+        </Routes>
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;
+
